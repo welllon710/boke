@@ -1,6 +1,5 @@
 <?php
 use think\facade\Route;
-
 Route::group(function (){
     Route::rule('/','index/index','get|post');//登录界面
     Route::rule('forget','index/forget','get|post');//发送邮件
