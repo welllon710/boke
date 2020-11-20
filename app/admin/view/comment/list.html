@@ -1,0 +1,79 @@
+{extend name='public/base' /}
+{block name='body'}
+<table class="layui-table layui-form">
+    <colgroup>
+        <col width="80">
+        <col width="200">
+        <col width="200">
+        <col width="200">
+        <col width="200">
+        <col width="200">
+        <col>
+        <col width="200">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>评论内容</th>
+        <th>文章id</th>
+        <th>用户id</th>
+        <th>创建时间</th>
+        <th>更新时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="user" id="obj"}
+    <tr class="id9">
+        <td>{$obj->id}</td>
+        <td>{$obj->content}</td>
+        <td>{$obj.article.title}</td>
+        <td>{$obj.member.nickname}</td>
+        <td>{$obj->create_time}</td>
+        <td>{$obj->update_time}</td>
+        <td>
+            <a class=" delete commentsdel" data-id="{$obj->id}"  href="#" >删除</a></td>
+    </tr>
+    {/volist}
+    </tbody>
+</table>
+<div class="page">
+    {$user|raw}
+</div>
+{/block}
+
+{block name='script'}
+<script>
+    $(function (){
+        $('.commentsdel').click(function (){
+            var id = $(this).attr('data-id')
+            layer.confirm('你确定要删除么?', {
+                btn: ['确定', '取消'] //按钮
+            }, function (index) {
+                layer.close(index)
+                $.ajax({
+                    url:"{:url('comment/del')}",
+                    type:'post',
+                    dataType:'json',
+                    data: {id:id},
+                    success:function (data){
+                        if (data.code === 1){
+                            msg(1,data.msg,data.url,2)
+                        }else {
+                            layer.open({
+                                title:'失败',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            })
+                        }
+                    }
+                })
+            }, function () {
+                layer.msg("您取消了删除!");
+            });
+            return false
+        })
+    })
+</script>
+{/block}

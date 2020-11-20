@@ -1,0 +1,95 @@
+{extend name='public/base' /}
+{block name='body'}
+<div class="layui-row">
+    <div class="layui-col-lg8">
+        <a href="?/admin/user/index/connect/qq.html" class="layui-btn">QQ</a>
+        <a href="?/admin/user/index/connect/weibo.html" class="layui-btn">微博</a>
+        <a href="?/admin/user/index/connect/weixin.html" class="layui-btn">微信</a>
+        <a href="?/admin/user/index/connect/alipay.html" class="layui-btn">支付宝</a>
+        <a href="?/admin/user/index/connect/xcx.html" class="layui-btn">小程序</a>
+    </div>
+    <div  class="layui-col-lg4" style="text-align: right">
+
+        <div class="layui-input-inline" style="width: 300px">
+            <input type="text" name="k" value="" placeholder="手机/用户名/邮箱/昵称" class="layui-input key">
+        </div>
+        <button type="button" class="layui-btn sou">搜索</button>
+    </div>
+</div>
+<table class="layui-table layui-form">
+    <colgroup>
+        <col width="80">
+        <col width="200">
+        <col width="200">
+        <col width="200">
+        <col width="200">
+        <col width="200">
+        <col>
+        <col width="200">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>用户名</th>
+        <th>昵称</th>
+        <th>邮箱</th>
+        <th>创建时间</th>
+        <th>更新时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="user" id="obj"}
+    <tr class="id9">
+        <td>{$obj->id}</td>
+        <td>{$obj->username}</td>
+        <td>{$obj->nickname}</td>
+        <td>{$obj->email}</td>
+        <td>{$obj->create_time}</td>
+        <td>{$obj->update_time}</td>
+        <td><a href="{:url('/think/admin/member/edit',['id'=>$obj->id])}">修改</a> |
+            <a class="del"  data-id="{$obj->id}" href="{:url('/think/admin/member/del')}" >删除</a></td>
+        </tr>
+    {/volist}
+    </tbody>
+</table>
+<div class="page">
+    {$user|raw}
+</div>
+
+{/block}
+{block name='script'}
+<script>
+    $(function (){
+        $('.del').click(function (){
+            var id = $(this).attr('data-id')
+            layer.confirm('你确定要删除么?', {
+                btn: ['确定', '取消'] //按钮
+            }, function (index) {
+                layer.close(index)
+                $.ajax({
+                    url:"{:url('member/del')}",
+                    type:'post',
+                    dataType:'json',
+                    data: {id:id},
+                    success:function (data){
+                        if (data.code === 1){
+                            msg(1,data.msg,data.url,2)
+                        }else {
+                            layer.open({
+                                title:'失败',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            })
+                        }
+                    }
+                })
+            },function () {
+                layer.msg("您取消了删除!");
+            });
+            return false
+        })
+    })
+</script>
+{/block}

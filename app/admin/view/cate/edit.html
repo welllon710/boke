@@ -1,0 +1,49 @@
+{extend name='public/base' /}
+{block name='body'}
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>修改栏目</legend>
+</fieldset>
+<form class="layui-form" >
+    <div class="layui-form-item">
+        <label class="layui-form-label">栏目名称</label>
+        <div class="layui-input-block">
+            <input type="hidden" value="{$user->id}" name="id">
+            <input type="text" name="catename" required lay-verify="required"
+                   autocomplete="off" placeholder="{$user->catename}" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn sendedit" >立即提交</button>
+        </div>
+    </div>
+</form>
+{/block}
+{block name='script'}
+<script>
+    $(function (){
+        $('.sendedit').click(function (){
+            $.ajax({
+                url:"{:url('cate/edit')}",
+                dataType:'json',
+                type:'post',
+                data:$('form').serialize(),
+                success:function (data){
+                    if (data.code === 1){
+                        msg(1,data.msg,data.url,2)
+                    }else {
+                        layer.open({
+                            title:'失败',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+            return false
+        })
+    })
+</script>
+
+{/block}

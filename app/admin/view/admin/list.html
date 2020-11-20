@@ -1,0 +1,104 @@
+{extend name='public/base' /}
+{block name='body'}
+<table class="layui-table layui-form">
+    <colgroup>
+        <col width="80">
+        <col width="100">
+        <col width="100">
+        <col>
+        <col width="150">
+        <col width="200">
+        <col width="200">
+        <col width="200">
+        <col width="200">
+        <col width=300">
+        <col width="200">
+    </colgroup>
+    <thead>
+    <tr >
+        <th class="th">ID</th>
+        <th class="th">用户名</th>
+        <th class="th">昵称</th>
+        <th class="th">邮箱</th>
+        <th class="th">登录次数</th>
+        <th class="th">状态</th>
+        <th class="th">管理员</th>
+        <th class="th">创建时间</th>
+        <th class="th">更新时间</th>
+        <th class="th"> 操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name='user' id='obj'}
+    <tr class="id84">
+        <td>{$obj->id}</td>
+        <td>{$obj->username}</td>
+        <td>{$obj->nickname}</td>
+        <td>{$obj->email}</td>
+        <td>{$obj->bout}</td>
+        <td>{if $obj->status == 0} <span style="color: red">禁用中</span> {else/} <span style="color: #228b22">启用中</span> {/if}</td>
+        <td>{if $obj->is_super == 1} <span style="color: #cd5c5c">超级管理员</span> {else/} 普通管理员 {/if}</td>
+        <td>{$obj->create_time}</td>
+        <td>{$obj->update_time}</td>
+        <td>
+            {if $obj->is_super !== '1'}
+            {if $obj->status === '0'}
+            <a href="#" class="sendstatus"
+               data-id="{$obj->id}" data-status="{$obj->status}">启用</a>|
+            {else/}
+            <a href="#" class="sendstatus"
+               data-id="{$obj->id}" data-status="{$obj->status}">禁用</a>|
+            {/if}
+            {/if}
+            <a href="{:url('/think/admin/manager/edit',['id'=>$obj->id])}">修改</a> |
+            <a class="del" data-id="{$obj->id}"  href="#">删除</a></td>
+    </tr>
+    {/volist}
+
+    </tbody>
+</table>
+<div class="page">
+    {$user|raw}
+</div>
+{/block}
+{block name='script'}
+<script>
+    $(function (){
+        $('.sendstatus').click(function (){
+            var id = $(this).attr('data-id'),
+                status = $(this).attr('data-status')
+            if (status == 1){
+                var message = '确定禁用吗?'
+            }else {
+                var message = '确定启用吗?'
+            }
+            layer.confirm(message, {
+                btn: ['确定', '取消'] //按钮
+            }, function (index) {
+                layer.close(index)
+                $.ajax({
+                    url: "{:url('admin/status')}",
+                    dataType: 'json',
+                    type: 'post',
+                    data: {id: id, status: status},
+                    success: function (data) {
+                        if (data.code === 1) {
+                            msg(1, data.msg, data.url, 2)
+                        } else {
+                            layer.open({
+                                title: '失败',
+                                content: data.msg,
+                                icon: 5,
+                                anim: 6
+                            })
+                        }
+                    }
+                })
+            },function () {
+                layer.msg("您取消了删除!");
+            });
+            return false
+        })
+    })
+</script>
+{/block}

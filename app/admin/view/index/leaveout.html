@@ -1,0 +1,49 @@
+{extend name='public/base' /}
+{block name='body'}
+<div>退出页面，可以放一些内容</div>
+{/block}
+{block name='script'}
+<script>
+     layui.use('layer',function(){
+        // layer.msg('<h2>退出成功</h2> <p id="">页面自动  <a id="href" href="/">跳转</a> 等待时间： <b id="wait">3</b></p> ', {icon: 1,shade:0.5});
+        layer.confirm('你确定要退出么?', {
+            btn: ['确定', '取消'] //按钮
+        }, function (index) {
+            layer.close(index)
+            $.ajax({
+                url:"{:url('index/leaveout')}",
+                dataType:'json',
+                type:'post',
+                data:{id:3},
+                success:function (data){
+                    if (data.code === 1){
+                        layer.msg(data.msg,{icon:6,time:2000},function (){
+                            location.href = data.url
+                        })
+                    }else {
+                        layer.open({
+                            title:'失败',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        }, function () {
+            layer.msg("您取消了删除!");
+
+       /*$.ajax({
+           url:"{:url('index/leaveout')}",
+           dataType:'json',
+           type:'post',
+           data:{id:3},
+           success:function (data){
+
+           }
+       })*/
+    })
+     })
+</script>
+{/block}
+

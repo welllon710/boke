@@ -1,0 +1,107 @@
+{extend name="public/base" /}
+{block name="style"}
+<style>
+</style>
+{/block}
+
+
+{block name="body"}
+
+<table class="layui-table layui-form">
+    <colgroup>
+        <col width="80">
+        <col width="80">
+        <col width="150">
+        <col width="80">
+        <col width="80">
+        <col width="80">
+        <col>
+        <col width="150">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>栏目名称</th>
+        <th>排序</th>
+        <th>创建时间</th>
+        <th>更新时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="list" id="obj"}
+    <tr class="id9">
+        <td>{$obj->id}</td>
+        <td>{$obj->catename}</td>
+        <td><input type="text" name="sort" value="{$obj->sort}" data-id="{$obj->id}"  size="1" ></td>
+        <td>{$obj->create_time}</td>
+        <td>{$obj->update_time}</td>
+        <td><a href="{:url('/think/admin/cate/edit',['id'=>$obj->id])}">修改</a> |
+            <a class="del delete" data-id="{$obj->id}"  href="#" >删除</a></td>
+    </tr>
+    {/volist}
+    </tbody>
+</table>
+<div class="page">
+        {$list|raw}
+    </div>
+{/block}
+{block name="script"}
+<script>
+    $(function (){
+        $('input[name=sort]').change(function (){
+            var id = $(this).attr('data-id'),
+                val = $(this).val()
+           $.ajax({
+               url:"{:url('cate/sort')}",
+               data:{id:id,sort:val},
+               dataType:'json',
+               type:'post',
+               success:function (data){
+                   if (data.code === 1){
+                       msg(1,'修改排序成功',data.url,2)
+                   }else {
+                       layer.open({
+                           title:'失败',
+                           content:data.msg,
+                           icon:5,
+                           anim:6
+                       })
+                   }
+               }
+           })
+        })
+        $(".del").click(function () {
+            var url = $(this).attr("href");
+            var id = $(this).attr("data-id");
+            layer.confirm('你确定要删除么?', {
+                btn: ['确定', '取消'] //按钮
+            }, function (index) {
+                layer.close(index)
+                $.ajax({
+                    url:"{:url('cate/del')}",
+                    type:'post',
+                    dataType:'json',
+                    data: {id:id},
+                    success:function (data){
+                        if (data.code === 1){
+                            msg(1,data.msg,'/think/admin/cate/list',2)
+                        }else {
+                            layer.open({
+                                title:'失败',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            })
+                        }
+                    }
+                })
+            }, function () {
+                layer.msg("您取消了删除!");
+            });
+            return false;
+        });
+    })
+
+</script>
+{/block}

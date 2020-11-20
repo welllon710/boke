@@ -1,0 +1,80 @@
+{extend name='public/base' /}
+{block name='body'}
+<form class="layui-form" >
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">确认密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="confirm" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">昵称</label>
+        <div class="layui-input-block">
+            <input type="text" name="nickname" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input type="text" name="email" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否禁用</label>
+        <div class="layui-input-block">
+            <input type="checkbox" value="1" name="status" lay-text="是|否" lay-skin="switch">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">超级权限</label>
+        <div class="layui-input-block">
+            <input type="checkbox" value="1" name="is_super" lay-text="开启|关闭" lay-skin="switch">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn addadmin" >立即提交</button>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name='script'}
+<script>
+    $(function (){
+        $('.addadmin').click(function (){
+            $.ajax({
+                url:"{:url('admin/add')}",
+                dataType:'json',
+                type:'post',
+                data:$('form').serialize(),
+                success:function (data){
+                    if (data.code === 1){
+                        msg(1,data.msg,data.url,2)
+                    }else {
+                        layer.open({
+                            title:'失败',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+            return false
+        })
+    })
+</script>
+{/block}
