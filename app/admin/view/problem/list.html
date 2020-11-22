@@ -1,0 +1,112 @@
+{extend name='public/base' /}
+{block name='style'}
+<style>
+    /*.th{*/
+    /*    text-align: center !important   ;*/
+    /*}*/
+</style>
+{/block}
+{block name='body'}
+<table class="layui-table layui-form">
+    <colgroup>
+        <col width="80">
+        <col width="200">
+        <col width="400">
+        <col>
+        <col width="200">
+        <col width="200">
+        <col width="150">
+        <col width="200">
+    </colgroup>
+    <thead>
+    <tr >
+        <th class="th">ID</th>
+        <th class="th">题目</th>
+        <th class="th">答案</th>
+        <th class="th">所属栏目</th>
+        <th class="th">创建时间</th>
+        <th class="th">更新时间</th>
+        <th class="th"> 操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name='data' id='obj'}
+    <tr class="id84">
+        <td>{$obj->id}</td>
+        <td>{$obj->problem}</td>
+        <td>{$obj->answer}</td>
+        <td>{$obj.topic.topic}</td>
+        <td>{$obj->create_time}</td>
+        <td>{$obj->update_time}</td>
+        <td>
+
+            <a href="{:url('/think/admin/problem/edit',['id'=>$obj->id])}">修改</a> |
+            <a class="articeldel" data-id="{$obj->id}"  href="#">删除</a></td>
+
+    </tr>
+    {/volist}
+
+    </tbody>
+</table>
+<div class="page">
+    {$data|raw}
+</div>
+{/block}
+{block name='script'}
+<script>
+    $(function (){
+        $('.sendistop').click(function (){
+            var id = $(this).attr('data-id'),
+                is_top = $(this).attr('data-is_top')
+            $.ajax({
+                url:"{:url('article/is_top')}",
+                dataType:'json',
+                type:'post',
+                data:{id:id,is_top:is_top},
+                success:function (data){
+                    if (data.code === 1){
+                        msg(1,data.msg,data.url,2)
+                    }else {
+                        layer.open({
+                            title:'失败',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+            return false
+        })
+        $('.articeldel').click(function (){
+            var id = $(this).attr('data-id')
+            layer.confirm('你确定要删除么?', {
+                btn: ['确定', '取消'] //按钮
+            }, function (index) {
+                layer.close(index)
+                $.ajax({
+                    url:"{:url('problem/del')}",
+                    type:'post',
+                    dataType:'json',
+                    data: {id:id},
+                    success:function (data){
+                        if (data.code === 1){
+                            msg(1,data.msg,data.url,2)
+                        }else {
+                            layer.open({
+                                title:'失败',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            })
+                        }
+                    }
+                })
+            }, function () {
+                layer.msg("您取消了删除!");
+            });
+            return false
+        })
+    })
+</script>
+{/block}

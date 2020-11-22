@@ -35,7 +35,7 @@ class Cate extends Model
             return 1;
         }else{
             return '修改失败';
-        }
+        }   
     }
     public function edit($data){
         $validate = new Home();

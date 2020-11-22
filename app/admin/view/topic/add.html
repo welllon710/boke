@@ -1,0 +1,48 @@
+{extend name="public/base" /}
+{block name="style"}
+<style>
+
+</style>
+{/block}
+
+{block name="body"}
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>添加试题栏目</legend>
+</fieldset>
+<form class="layui-form" >
+    <div class="layui-form-item">
+        <label class="layui-form-label">栏目名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="topic" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn sendColumn" >立即提交</button>
+        </div>
+    </div>
+</form>
+
+{/block}
+{block name="script"}
+<script>
+    $(function (){
+        $('.sendColumn').click(function (){
+            $.ajax({
+                url:"{:url('topic/add')}",
+                dataType:'json',
+                data:$('form').serialize(),
+                type:'post',
+                success:function (data){
+                    if(data.code === 1){
+                        msg(1,'成功',data.url,2);
+                    }else {
+                        msg({code:1,msg:'失败'}); //以对象传入
+                    }
+                }
+            })
+            return false
+        })
+    })
+</script>
+{/block}

@@ -4,6 +4,7 @@
 namespace app\admin\controller;
 
 
+use app\admin\model\Topic;
 use app\BaseController;
 use think\model\concern\SoftDelete;
 use think\Request;

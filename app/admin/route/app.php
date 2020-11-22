@@ -14,10 +14,12 @@ Route::group('admin',function (){
     Route::rule('cate/sort','cate/sort','post');//栏目排序修改
     Route::rule('cate/edit/[:id]','cate/edit','get|post');//栏目修改
     Route::rule('cate/del/[:id]','cate/del','post');//栏目删除
+
     Route::rule('article/list','article/list','get');//文章列表
     Route::rule('article/add','article/add','get|post');//文章添加
     Route::rule('article/edit/[:id]','article/edit','get|post');//文章修改
     Route::rule('article/del/[:id]','article/del','post');//文章删除
+
     Route::rule('article/is_top','article/is_top','post');//文章推荐
     Route::rule('member/list','member/list','get');//用户列表
     Route::rule('member/add','member/add','get|post');//添加用户
@@ -35,4 +37,14 @@ Route::group('admin',function (){
     Route::rule('error','error/index','get');//无权限页面
     Route::rule('comment/list','comment/list','get');//评论列表
     Route::rule('comment/del','comment/del','post');//删除评论
+
+    Route::rule('topic/list','topic/list','get'); //栏目列表
+    Route::rule('topic/add','topic/add','get|post');//栏目添加
+    Route::rule('topic/edit/[:id]','topic/edit','get|post');//栏目修改
+    Route::rule('topic/del/[:id]','topic/del','post');//栏目删除
+
+    Route::rule('problem/list','problem/list','get');//试题列表
+    Route::rule('problem/add','problem/add','get|post');//试题添加
+    Route::rule('problem/edit/[:id]','problem/edit','get|post');//试题修改
+    Route::rule('problem/del/[:id]','problem/del','post');//试题删除
 })->middleware(\app\middleware\Auth::class);
