@@ -1,0 +1,87 @@
+{extend name='public/base' /}
+{block name='style'}
+<style>
+    .answer{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+    .abswer_th{
+        max-width: 600px;
+    }
+</style>
+{/block}
+{block name='body'}
+<table class="layui-table layui-form">
+    <colgroup>
+        <col width="80">
+        <col width="200">
+        <col width="200">
+        <col width="100">
+        <col width="150">
+        <col width="150">
+        <col width="200">
+    </colgroup>
+    <thead>
+    <tr >
+        <th class="th">ID</th>
+        <th class="th">昵称</th>
+        <th class="th abswer_th">头像</th>
+        <th class="th">性别</th>
+        <th class="th">国家</th>
+        <th class="th">创建时间</th>
+        <th class="th"> 操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name='data' id='obj'}
+    <tr class="id84">
+        <td>{$obj->id}</td>
+        <td>{$obj->nickname}</td>
+        <td class="answer">{$obj->avatarurl}</td>
+        <td>{$obj->gender}</td>
+        <td>{$obj->country}</td>
+        <td>{$obj->create_time}</td>
+        <td>
+            <a class="wxdel"  data-id="{$obj->id}" href="#">删除</a></td>
+        </tr>
+    {/volist}
+    </tbody>
+</table>
+<div class="page">
+    {$data|raw}
+</div>
+{/block}
+{block name='script'}
+<script>
+    $(".wxdel").click(function () {
+        var id = $(this).attr("data-id");
+        layer.confirm('你确定要删除该用户吗?ps:会删除该用户一切信息', {
+            btn: ['确定', '取消'] //按钮
+        }, function (index) {
+            layer.close(index)
+            $.ajax({
+                url:"{:url('wx/del')}",
+                type:'post',
+                dataType:'json',
+                data: {id:id},
+                success:function (data){
+                    if (data.code === 1){
+                        msg(1,data.msg,'/think/admin/wx/list',2)
+                    }else {
+                        layer.open({
+                            title:'失败',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        })
+                    }
+                }
+            })
+        }, function () {
+            layer.msg("您取消了删除!");
+        });
+        return false;
+    });
+</script>
+{/block}

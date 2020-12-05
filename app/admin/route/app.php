@@ -35,6 +35,7 @@ Route::group('admin',function (){
 
     Route::rule('manager/status','admin/status','post');//状态设置
     Route::rule('error','error/index','get');//无权限页面
+
     Route::rule('comment/list','comment/list','get');//评论列表
     Route::rule('comment/del','comment/del','post');//删除评论
 
@@ -49,4 +50,5 @@ Route::group('admin',function (){
     Route::rule('problem/del/[:id]','problem/del','post');//试题删除
 
     Route::rule('wx/list','wx/list','get'); //微信用户列表
+    Route::rule('wx/del','wx/del','post'); //删除微信用户
 })->middleware(\app\middleware\Auth::class);

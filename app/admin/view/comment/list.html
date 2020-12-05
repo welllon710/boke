@@ -1,4 +1,15 @@
 {extend name='public/base' /}
+{block name='style'}
+<style>
+    .answer{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        max-width: 200px !important;
+    }
+
+</style>
+{/block}
 {block name='body'}
 <table class="layui-table layui-form">
     <colgroup>
@@ -7,38 +18,43 @@
         <col width="200">
         <col width="200">
         <col width="200">
-        <col width="200">
-        <col width="200">
-        <col width="200">
-        <col>
+        <col width="150">
+        <col width="150">
         <col width="200">
     </colgroup>
     <thead>
-    <tr>
-        <th>ID</th>
-        <th>评论内容</th>
-        <th>文章标题</th>
-        <th>用户id</th>
-        <th>父级id</th>
-        <th>评论id</th>
-        <th>创建时间</th>
-        <th>更新时间</th>
-        <th>操作</th>
+    <tr >
+        <th class="th">ID</th>
+
+        <th class="th">文章标题</th>
+
+        <th class="th">用户名</th>
+        <th class="th abswer_th">内容</th>
+        <th class="th">回复用户</th>
+        <th class="th">评论id</th>
+        <th class="th">创建时间</th>
+        <th class="th"> 操作</th>
     </tr>
     </thead>
     <tbody>
-    {volist name="user" id="obj"}
-    <tr class="id9">
+    {volist name='user' id='obj'}
+    <tr class="id84">
         <td>{$obj->id}</td>
-        <td>{$obj->content}</td>
         <td>{$obj.article.title}</td>
-        <td>用户id</td>
-        <td>父级id</td>
-        <td>评论id</td>
+        <td>{$obj->nickname}</td>
+        <td class="answer">{$obj->content}</td>
+        <td>{$obj->parent_name}</td>
+        <td>{$obj->comment_id}</td>
         <td>{$obj->create_time}</td>
-        <td>{$obj->update_time}</td>
         <td>
-            <a class=" delete commentsdel" data-id="{$obj->id}"  href="#" >删除</a></td>
+            {if $obj->delete_time !== null}
+            <a href="#" class="sendstatus"
+               data-id="{$obj->id}" data-status="0" style="color: red">恢复</a>
+            {else/}
+            <a href="#" class="sendstatus"
+               data-id="{$obj->id}" data-status="1">删除</a>
+            {/if}
+
     </tr>
     {/volist}
     </tbody>
@@ -47,39 +63,45 @@
     {$user|raw}
 </div>
 {/block}
-
 {block name='script'}
 <script>
     $(function (){
-        $('.commentsdel').click(function (){
-            var id = $(this).attr('data-id')
-            layer.confirm('你确定要删除么?', {
+        $('.sendstatus').click(function (){
+            var id = $(this).attr('data-id'),
+                status = $(this).attr('data-status')
+            if (status == 1){
+                var message = '确定删除吗?'
+            }else {
+                var message = '确定恢复吗?'
+            }
+            layer.confirm(message, {
                 btn: ['确定', '取消'] //按钮
             }, function (index) {
                 layer.close(index)
                 $.ajax({
-                    url:"{:url('comment/del')}",
-                    type:'post',
-                    dataType:'json',
-                    data: {id:id},
-                    success:function (data){
-                        if (data.code === 1){
-                            msg(1,data.msg,data.url,2)
-                        }else {
+                    url: "{:url('comment/del')}",
+                    dataType: 'json',
+                    type: 'post',
+                    data: {id: id, status: status},
+                    success: function (data) {
+                        if (data.code === 1) {
+                            msg(1, data.msg, data.url, 2)
+                        } else {
                             layer.open({
-                                title:'失败',
-                                content:data.msg,
-                                icon:5,
-                                anim:6
+                                title: '失败',
+                                content: data.msg,
+                                icon: 5,
+                                anim: 6
                             })
                         }
                     }
                 })
-            }, function () {
+            },function () {
                 layer.msg("您取消了删除!");
             });
             return false
         })
     })
+
 </script>
 {/block}
