@@ -8,6 +8,8 @@
         <col width="200">
         <col width="200">
         <col width="200">
+        <col width="200">
+        <col width="200">
         <col>
         <col width="200">
     </colgroup>
@@ -15,8 +17,10 @@
     <tr>
         <th>ID</th>
         <th>评论内容</th>
-        <th>文章id</th>
+        <th>文章标题</th>
         <th>用户id</th>
+        <th>父级id</th>
+        <th>评论id</th>
         <th>创建时间</th>
         <th>更新时间</th>
         <th>操作</th>
@@ -28,7 +32,9 @@
         <td>{$obj->id}</td>
         <td>{$obj->content}</td>
         <td>{$obj.article.title}</td>
-        <td>{$obj.member.nickname}</td>
+        <td>用户id</td>
+        <td>父级id</td>
+        <td>评论id</td>
         <td>{$obj->create_time}</td>
         <td>{$obj->update_time}</td>
         <td>

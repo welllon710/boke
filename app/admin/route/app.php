@@ -47,4 +47,6 @@ Route::group('admin',function (){
     Route::rule('problem/add','problem/add','get|post');//试题添加
     Route::rule('problem/edit/[:id]','problem/edit','get|post');//试题修改
     Route::rule('problem/del/[:id]','problem/del','post');//试题删除
+
+    Route::rule('wx/list','wx/list','get'); //微信用户列表
 })->middleware(\app\middleware\Auth::class);
