@@ -4,22 +4,30 @@
     /*.th{*/
     /*    text-align: center !important   ;*/
     /*}*/
+    .answer{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+    .abswer_th{
+        max-width: 600px;
+    }
 </style>
 {/block}
 {block name='body'}
 <table class="layui-table layui-form">
     <colgroup>
         <col width="80">
-        <col width="100">
-        <col width="100">
-        <col>
-        <col width="260">
-        <col width="90">
-        <col width="90">
-        <col width="90">
         <col width="200">
-        <col width=160">
-        <col width="50">
+        <col width="200">
+
+        <col width="100">
+        <col width="200">
+        <col width="100">
+        <col width="100">
+        <col width="200">
+        <col width=200">
+        <col width="200">
     </colgroup>
     <thead>
     <tr >
@@ -27,7 +35,7 @@
         <th class="th">标题</th>
         <th class="th">概要</th>
         <th class="th">标签</th>
-        <th class="th">内容</th>
+        <th class="th abswer_th">内容</th>
         <th class="th">是否推荐</th>
         <th class="th">所属栏目</th>
         <th class="th">创建时间</th>
@@ -42,7 +50,7 @@
         <td>{$obj->title}</td>
         <td>{$obj->desc}</td>
         <td>{$obj->tags}</td>
-        <td>{$obj->content}</td>
+        <td class="answer">{$obj->content}</td>
         <td>{if $obj->is_top == '1'} <span style="color: red">置顶</span> {else/} 不置顶 {/if}</td>
         <td>{$obj.cate.catename}</td>
         <td>{$obj->create_time}</td>

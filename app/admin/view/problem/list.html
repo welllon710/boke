@@ -17,16 +17,16 @@
         <col width="80">
         <col width="200">
         <col width="200">
-        <col width="100">
-        <col width="150">
-        <col width="150">
+        <col width="200">
+        <col width="200">
+        <col width="200">
         <col width="200">
     </colgroup>
     <thead>
     <tr >
         <th class="th">ID</th>
-        <th class="th">题目</th>
-        <th class="th abswer_th">答案</th>
+        <th class="th abswer_th">题目</th>
+        <th class="th abswer_th">选项</th>
         <th class="th">所属栏目</th>
         <th class="th">创建时间</th>
         <th class="th">更新时间</th>
@@ -37,7 +37,7 @@
     {volist name='data' id='obj'}
     <tr class="id84">
         <td>{$obj->id}</td>
-        <td>{$obj->problem}</td>
+        <td class="answer">{$obj->problem}</td>
         <td class="answer">{$obj->answer}</td>
         <td>{$obj.topic.topic}</td>
         <td>{$obj->create_time}</td>

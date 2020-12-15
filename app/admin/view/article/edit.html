@@ -65,9 +65,21 @@
 {block name='script'}
 <script>
     var ue = UE.getEditor('container');
+    var arr='<?php echo $user->content?>';
+    console.log(arr)
+    ue.ready(function(){
+        //设置编辑器的内容
+        ue.setContent(`${arr}`);
+        //获取html内容，返回: <p>hello</p>
+        var html = ue.getContent();
+        //获取纯文本内容，返回: hello
+        var txt = ue.getContentTxt();
+    })
+
     setTimeout(function () {
         ue.setHeight(500)
     },500)
+
     layui.use(['form', 'upload'], function () {
         var form = layui.form,
             layer = layui.layer,

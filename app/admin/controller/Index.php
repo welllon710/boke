@@ -87,8 +87,6 @@ class Index extends BaseController
         return view();
     }
     public function leaveout(){
-        $res =  Cache::delete('info');
-        $res = Cache::get('info');
         if (request()->isAjax()){
             $del =  Cache::delete('info');
             if (Cache::has('info')){
@@ -97,7 +95,7 @@ class Index extends BaseController
                 $this->success('退出成功','/think');
             }
         }
-        return view('',['user'=>$res]);
+        return view();
 
     }
 }

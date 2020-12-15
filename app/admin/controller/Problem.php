@@ -17,7 +17,7 @@ class Problem extends BaseController
     }
     public function add(){
         if (request()->isAjax()){
-          $data = request()->param(['problem','answer','topic_id']);
+          $data = request()->param(['problem','answer','topic_id','analysis']);
           $problem = new ProblemModel();
           $res = $problem->add($data);
             if ($res === 1){
@@ -32,7 +32,7 @@ class Problem extends BaseController
     }
     public function edit(){
         if (request()->isAjax()){
-            $data = request()->param(['id','problem','answer','topic_id']);
+            $data = request()->param(['id','problem','answer','topic_id','analysis']);
             $problem = new ProblemModel();
             $res = $problem->edit($data);
             if ($res === 1){
