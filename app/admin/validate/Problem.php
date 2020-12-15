@@ -16,7 +16,8 @@ class Problem extends Validate
     protected $rule = [
         'problem'=>'require',
         'answer'=>'require',
-        'topic_id'=>'require'
+        'topic_id'=>'require',
+        'analysis'=>'require'
     ];
 
     /**
@@ -27,7 +28,7 @@ class Problem extends Validate
      */
     protected $message = [];
     protected $scene = [
-        'add'=>['problem','answer','topic_id'],
-        'edit'=>['problem','answer','topic_id']
+        'add'=>['problem','topic_id','analysis'],
+        'edit'=>['problem','topic_id','analysis']
     ];
 }
